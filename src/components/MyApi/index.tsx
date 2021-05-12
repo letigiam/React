@@ -1,41 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+// import { Col, Row } from 'react-bootstrap';
 import { _get } from '../Services/_get';
-//import Service from '../Services'
-import data from "../data.json";
-//const myApiJson = "https://jsonplaceholder.typicode.com/users"
-
-const results = data.results;
 
 export const MyApi = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [users, setUsers] = useState<string>();
+    const [users, setUsers] = useState<any[]>([]);
+
 
     //eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         (async () => {
             const response = await _get(null);
             console.log('response api ', response);
-            setUsers(await response);
+            setUsers(response && response.results ? response.results : []);
         })();
     }, []);
 
     return (
         <>
             <p>we have {users?.length} users</p>
-            <Row>
-                <Col>
-                    {/* {
-                        data.results.map((results) => {
-                            return (
-                                <div>
-                                    <p>{results.name}</p>
-                                </div>
-                            );
-                        })
-                    } */}
-                </Col>
-            </Row>
+            {users.map((users) => (
+                <p>{users.name}</p>
+            ))}
         </>
     );
 };
